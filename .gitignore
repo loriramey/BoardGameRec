@@ -1,0 +1,25 @@
+# Compiled python files
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# PyCharm project settings (optional)
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db
