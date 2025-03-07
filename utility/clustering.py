@@ -27,3 +27,4 @@ unique_categories.to_csv("categories_list.csv", index=True)
 print(f"Extracted {len(unique_mechanics)} unique game mechanics. Saved to mechanics_list.csv.")
 print(f"Extracted {len(unique_categories)} unique game categories. Saved to categories_list.csv.")
 
+
