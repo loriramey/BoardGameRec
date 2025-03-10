@@ -2,7 +2,7 @@ import pandas as pd
 import ast  # Converts string lists to Python lists
 
 # Load cleaned dataset
-file_path = "/Users/loriramey/PycharmProjects/BGapp/data/cleaned_dataset.csv"
+file_path = "/data/cleaned_dataset.csv"
 df = pd.read_csv(file_path)
 
 # --- Fix `yearpublished` display ---
@@ -22,7 +22,7 @@ df['boardgamecategory'] = df['boardgamecategory'].apply(convert_to_list)
 df['boardgamemechanic'] = df['boardgamemechanic'].apply(convert_to_list)
 
 # --- Save cleaned dataset ---
-cleaned_file_path = "/Users/loriramey/PycharmProjects/BGapp/data/final_cleaned_dataset.csv"
+cleaned_file_path = "/data/final_cleaned_dataset.csv"
 df.to_csv(cleaned_file_path, index=False)
 
 # --- Verify changes ---

@@ -2,7 +2,7 @@ import pandas as pd
 import ast  # To convert string lists to actual lists
 
 # Load dataset
-file_path = "/Users/loriramey/PycharmProjects/BGapp/data/final_cleaned_dataset.csv"
+file_path = "/data/final_cleaned_dataset.csv"
 df = pd.read_csv(file_path)
 
 # Convert mechanics and category columns from string to actual lists

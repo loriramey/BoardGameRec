@@ -58,7 +58,7 @@ print(f"Games with < 25 ratings: {very_low_rating_count} ({very_low_rating_perce
 import pandas as pd
 
 # Load the dataset
-file_path = "/Users/loriramey/PycharmProjects/BGapp/data/final_cleaned_dataset.csv"
+file_path = "/data/final_cleaned_dataset.csv"
 df = pd.read_csv(file_path)
 
 # Filter games with at least 25 ratings

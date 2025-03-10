@@ -1,7 +1,7 @@
 import pandas as pd
 import ast
-tags_file = "/Users/loriramey/PycharmProjects/BGapp/data/tags.csv"
-data_file = "/Users/loriramey/PycharmProjects/BGapp/data/final_tagged_data.csv"
+tags_file = "/data/tags.csv"
+data_file = "/data/final_tagged_data.csv"
 
 #initial dictionary = each tag maps to multiple categories
 df_tags = pd.read_csv(tags_file, header=None)

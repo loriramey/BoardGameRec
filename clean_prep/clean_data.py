@@ -2,7 +2,7 @@ import pandas as pd
 import re
 
 # Load dataset
-file_path = "/Users/loriramey/PycharmProjects/BGapp/data/game_info_select.csv"  # Update with actual path
+file_path = "/data/game_info_select.csv"  # Update with actual path
 df = pd.read_csv(file_path)
 
 # Remove "&#10;" and other similar HTML artifacts in 'description' field
