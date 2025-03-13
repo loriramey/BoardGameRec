@@ -11,4 +11,12 @@ min_rating = float(input("Minimum rating? (or 0 to skip): ") or 0)
 results = get_rec_by_name(game_name, min_players, max_players, max_time, min_rating)
 
 # Display results
-print(results)
+if isinstance(results, str):
+    print(results)  # If error message (e.g., game not found)
+else:
+    print("\n🎲 **Top Recommended Games** 🎲")
+    for idx, row in results.iterrows():
+        print(f"{idx+1}. {row['name']} ({row['yearpublished']}) - {row['average']:.2f}⭐")
+        print(f"   Players: {row['minplayers']} - {row['maxplayers']}, Playtime: {row['playingtime']} min")
+        print(f"   Tags: {row['tags']}")
+        print(f"   Description: {row['description'][:100]}...\n")  # Show preview

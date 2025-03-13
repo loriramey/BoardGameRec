@@ -12,8 +12,15 @@ game_index = {name: idx for idx, name in enumerate(df['name'])}  #faster index f
 #FUNCTION: use Fuzzy Match on game name to handle user input
 #search for name that's at least 80% match to what they typed
 def find_closest_name(user_input):
-    best_match, score, idx = process.extractOne(user_input, game_index.keys())
-    return best_match if score > 80 else None
+    matches = process.extract(user_input, game_index.keys(), limit=5)
+    print("\n Did you mean:")
+    for idx, (match, score, _) in enumerate(matches):
+        print(f"{idx+1}. {match} ({score}%)")
+
+    choice = input("Enter number to select or press Enter to choose best match: ")
+    if choice.isdigit() and 1<= int(choice) <= len(matches):
+        return matches[int(choice)-1][0]
+    return matches[0][0] #default to best match on skip
 
 #FUNCTION: find "similar" games to user input game
 def get_rec_by_name(game_name, min_players = None, max_players = None,
