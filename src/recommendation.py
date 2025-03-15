@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from rapidfuzz import process, fuzz
+from collections import defaultdict
 
 GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
 COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
@@ -27,6 +28,11 @@ def find_closest_name(user_input):
     if choice.isdigit() and 1 <= int(choice) <= len(matches):
         return matches[int(choice) - 1][0]
     return matches[0][0]  # Default to best match if user skips selection
+
+#FUNCTION: extract root game title and avoid returning a string from the same game series
+def get_root_title(title):
+    return title.split(':')[0].split('(')[0].strip().lower()
+
 
 #FUNCTION: find "similar" games to user input game
 def get_rec_by_name(game_name, min_players = None, max_players = None,
@@ -62,13 +68,26 @@ def get_rec_by_name(game_name, min_players = None, max_players = None,
     # ✅ Debug: Print the matched games
     print(f"Top matches for {game_name}: {sim_game_names[:10]}")
     print(f"🧐 Checking sim_game_names: {sim_game_names}")
-    print(f"🧐 Checking df['name'] sample: {df['name'].head(10).tolist()}")
 
     #grab full game data from source data, handle capitalization for sake of filtering
     sim_game_names_lower = [name.lower() for name in sim_game_names]  # Convert to lowercase
     df['name_lower'] = df['name'].str.lower()  # Create a lowercase version of names in df
     recommended_games = df[df['name_lower'].isin(sim_game_names_lower)].copy()
     print(f"🔍 Before filtering: {len(recommended_games)} games found")
+
+    #filter out repeated games in the same series using helper function
+    filtered_ganes = []
+    seen_roots = set()
+
+    for _, row in recommended_games.iterrows():
+        root = get_root_title(row['name_lower'])
+        if root not in seen_roots:
+            filtered_ganes.append(row)
+            seen_roots.add(root)
+    recommended_games = pd.DataFrame(filtered_ganes)
+
+    #for debug
+    print(f"🎯 After filtering clones: {len(recommended_games)} games remaining")
 
     #apply user filters
     if min_players:
