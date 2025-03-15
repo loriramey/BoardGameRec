@@ -25,3 +25,7 @@ dist/
 Thumbs.dbdata/cosine_similarity_weighted.npy
 data/cosine_similarity_matrix.npy
 data/cosine_similarity_matrix.csv
+.git/lfs/objects/*
+data/cosine_similarity_weighted.npy
+data/cosine_similarity_matrix.npy
+data/cosine_similarity_matrix.csv
