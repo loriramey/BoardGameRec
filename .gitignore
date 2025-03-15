@@ -29,3 +29,5 @@ data/cosine_similarity_matrix.csv
 data/cosine_similarity_weighted.npy
 data/cosine_similarity_matrix.npy
 data/cosine_similarity_matrix.csv
+data/*.npy
+data/*.csv
