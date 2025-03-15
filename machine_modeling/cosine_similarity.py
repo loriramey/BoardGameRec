@@ -3,26 +3,39 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
+import pickle
+from sklearn.metrics.pairwise import cosine_similarity
+from scipy.sparse import hstack
 
-file_path = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
-df = pd.read_csv(file_path)
+#load game data file and the pre-computed TF-IDF tags/categories/mechanics vectors
+GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
+TFIDF_MIXED_FILE = "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_mixed.pkl"
 
-#IF-IDF vectorize Tags, Cats, Mechs stored TF-IDF data
-tfidf = TfidfVectorizer(stop_words='english')
-#combine all 3 vectors for processing
-df['combo_features'] = df['tags_str'] + " " + df['categories_str'] + " " + df['mechanics_str']
-tfidf_matrix = tfidf.fit_transform(df['combo_features'])
-#pull in normalized data like min & max players, playtime
-scaler = MinMaxScaler()
-scaled_features = scaler.fit_transform(df[['minplayers_scaled', 'maxplayers_scaled', 'playingtime_scaled']])
+df = pd.read_csv(GAMEDATA_FILE)
+with open(TFIDF_MIXED_FILE, "rb") as f:
+    tfidf_mixed_matrix = pickle.load(f)  #40% tags, 30% categories, 30% mechanics weights
+
+#extract the scaled min/max vectors for maxplayers, playingtime
+max_players_scaled = np.expand_dims(df['maxplayers_scaled'].values, axis = 1)
+playtime_scaled = np.expand_dims(df['playingtime_scaled'].values, axis = 1)
+
+#overall weighting in the model for similarity matches
+WEIGHT_TFIDF = 0.70
+WEIGHT_MAXPLAYERS = 0.10
+WEIGHT_PLAYTIME = 0.20
+
 #create a single dataframe with all factors
-tfidf_dense = tfidf_matrix.toarray()
-feature_matrix = np.hstack((tfidf_dense, scaled_features))
+feature_matrix = hstack([
+    tfidf_mixed_matrix * WEIGHT_TFIDF,
+    max_players_scaled * WEIGHT_MAXPLAYERS,
+    playtime_scaled * WEIGHT_PLAYTIME
+])
 
 #compute cosine similarity on these combined features
 cosine_sim = cosine_similarity(feature_matrix, feature_matrix)
 
-#convert to dataframe for fast lookups, save and inspect shape
-cosine_sim_df = pd.DataFrame(cosine_sim, index=df['name'], columns=df['name'])
-cosine_sim_df.to_csv("/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_matrix.csv")
-print("Cosine Similarity Matrix Shape:", cosine_sim_df.shape)
+#convert to dataframe for faster lookups, save as numpy for faster retrieval
+COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
+np.save(COSINE_SIM_FILE, cosine_sim)
+
+print("Cosine Similarity Matrix Shape:", cosine_sim.shape)

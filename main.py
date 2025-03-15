@@ -6,9 +6,10 @@ min_players = int(input("Minimum players? (or 0 to skip): ") or 0)
 max_players = int(input("Maximum players? (or 0 to skip): ") or 0)
 max_time = int(input("Max playtime in minutes? (or 0 to skip): ") or 0)
 min_rating = float(input("Minimum rating? (or 0 to skip): ") or 0)
+min_year = int(input("Newer than [4 digit year]? (or 0 to skip): ") or 0)
 
 # Get Recommendations
-results = get_rec_by_name(game_name, min_players, max_players, max_time, min_rating)
+results = get_rec_by_name(game_name, min_players, max_players, max_time, min_rating, min_year)
 
 # Display results
 if isinstance(results, str):

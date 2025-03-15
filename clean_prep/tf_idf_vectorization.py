@@ -49,9 +49,9 @@ with open("../models/tfidf_mechanics_vectorizer.pkl", "wb") as f:
 from scipy.sparse import hstack  # Efficiently concatenate sparse matrices
 
 # Apply weights
-tfidf_tags_matrix *= 0.40
+tfidf_tags_matrix *= 0.20
 tfidf_categories_matrix *= 0.30
-tfidf_mechanics_matrix *= 0.30
+tfidf_mechanics_matrix *= 0.50
 
 # Stack into a final mixed matrix
 final_tfidf_matrix = hstack([tfidf_tags_matrix, tfidf_categories_matrix, tfidf_mechanics_matrix])
