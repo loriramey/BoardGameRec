@@ -22,4 +22,6 @@ dist/
 
 # OS-specific
 .DS_Store
-Thumbs.db
+Thumbs.dbdata/cosine_similarity_weighted.npy
+data/cosine_similarity_matrix.npy
+data/cosine_similarity_matrix.csv
