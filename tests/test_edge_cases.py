@@ -1,5 +1,5 @@
 import pytest
-from src.recommendation import get_rec_by_name
+from src.recommendation import get_rec_by_name, print_game_info, df
 
 # List of edge-case game inputs
 edge_case_games = [
@@ -14,9 +14,18 @@ edge_case_games = [
     "IQ 2000",  # Check for variations like "I.Q. 2000"
     "Agamemnon",
     "Down in Flames",
-    "Fragged Empire"
+    "Empire"
 ]
 
+def print_recommendations_summary(recs_df):
+    """
+    For each recommended game in the DataFrame, print:
+    - name / min players / max players / playingtime / average / average weight / tags
+    """
+    for _, row in recs_df.iterrows():
+        print(f"{row['name']} / Players: {row['minplayers']}-{row['maxplayers']} / "
+              f"Playtime: {row['playingtime']} min / Rating: {row['average']:.2f}⭐ / "
+              f"Avg Weight: {row['averageweight']} / Tags: {row['tags']}")
 
 @pytest.mark.parametrize("game_input", edge_case_games)
 def test_edge_case_recommendations(game_input):
@@ -40,7 +49,8 @@ def test_edge_case_recommendations(game_input):
         if "similarity" in recs.columns:
             recs_sorted = recs.sort_values(by="similarity", ascending=False)
             top5 = recs_sorted.head(5)
-            print(top5[['name', 'playingtime', 'similarity']])
+            print("Top Recommendations Summary:")
+            print_recommendations_summary(top5)
             assert len(top5) > 0, f"Expected some recommendations for input '{game_input}'"
         else:
             print("No 'similarity' column found in recommendations:")

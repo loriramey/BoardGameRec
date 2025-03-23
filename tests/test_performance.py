@@ -11,7 +11,7 @@ def test_performance_recommendations():
 
     start_time = time.time()
     for game in games_to_test:
-        _ = get_rec_by_name(game, max_results=10)
+        _ = get_rec_by_name(game, auto_select=True)
     total_time = time.time() - start_time
 
     avg_time_per_query = total_time / len(games_to_test)

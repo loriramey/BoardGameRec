@@ -1,4 +1,4 @@
-from src.recommendation import get_rec_by_name
+from src.recommendation import get_rec_by_name, print_game_info
 
 # Example: User input
 game_name = input("Enter a game name: ")
@@ -17,7 +17,8 @@ if isinstance(results, str):
 else:
     print("\n🎲 **Top Recommended Games** 🎲")
     for idx, row in results.iterrows():
-        print(f"{idx+1}. {row['name']} ({row['yearpublished']}) - {row['average']:.2f}⭐")
+        print(f"{idx+1}. {row['name']} ({row['yearpublished']}) - Average Rating: {row['average']:.2f}⭐")
         print(f"   Players: {row['minplayers']} - {row['maxplayers']}, Playtime: {row['playingtime']} min")
-        print(f"   Tags: {row['tags']}")
-        print(f"   Description: {row['description'][:100]}...\n")  # Show preview
+        print(f"   Tags: {row['tags']} | Categories: {row['category_list']}")
+        print(f"   Mechanics: : {row['mech_list']} | Avg Weight: {row['averageweight']:.2f}")
+        print(f"   Description: {row['description'][:500]}...\n")  # Show preview

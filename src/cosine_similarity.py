@@ -22,7 +22,6 @@ def load_tfidf_matrix(file_path, df):
     else:
         return obj
 
-
 def compute_cosine_similarity(data_file, output_file, tfidf_files):
     """
     Compute and save a weighted cosine similarity matrix for a given dataset.
