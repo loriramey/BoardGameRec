@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import sys
-from src.custom_CS_modeling import compute_custom_cs
+from machine_modeling_old.custom_CS_modeling import compute_custom_cs
 from src.recommendation import get_rec_by_name, print_recommendations_summary, cosine_sim
 from src.data_helpers import df, get_similarity
 
@@ -44,7 +44,7 @@ original_cs = cosine_sim.copy()  # copy original global CS matrix
 summary_list = []
 
 # --- Step 4: Randomly sample 10 games from the master DataFrame ---
-random_games = df.sample(n=10, random_state=42)
+random_games = df.sample(n=10, random_state=91)
 for _, game in random_games.iterrows():
     game_name = game['name']
     print(f"\n=== Testing recommendations for: {game_name} ===")

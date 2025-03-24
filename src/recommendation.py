@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 from rapidfuzz import process, fuzz
 
-GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
-COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
+GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted_cleaned.csv"
+COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
 
 # Load master data and cosine similarity matrix
 df = pd.read_csv(GAMEDATA_FILE)
@@ -15,16 +15,19 @@ df['yearpublished'] = pd.to_numeric(df['yearpublished'], errors='coerce')
 df = df.dropna(subset=['yearpublished'])
 df['yearpublished'] = df['yearpublished'].astype(int)
 
+
 #FUNCTION to print a quick summary of recommended info
 def print_recommendations_summary(recs_df):
     """
     Print a compact summary for each recommended game:
-      name / min players / max players / playingtime / average / average weight / tags
+      name / min players / max players / playingtime / average / average weight / tags / cats / mechs
     """
     for _, row in recs_df.iterrows():
         print(f"{row['name']} / Players: {row['minplayers']}-{row['maxplayers']} / "
               f"Playtime: {row['playingtime']} min / Rating: {row['average']:.2f}⭐ / "
-              f"Avg Weight: {row['averageweight']} / Tags: {row['tags']}")
+              f"Avg Weight: {row['averageweight']} / Tags: {row['tags']} / "
+              f"Category: {row['categories_str']} /  Mechanics: {row['mechanics_str']}"
+        )
 
 
 #FUNCTION for pulling and printing a single game's information
@@ -48,7 +51,7 @@ def print_game_info(game_name):
     print(f"   Average Weight: {row['averageweight']}")
     # Use description_clean if it exists; otherwise fallback to description:
     desc = row.get('description_clean', row.get('description', 'No description available'))
-    print(f"   Description: {desc[:100]}...\n")
+    print(f"   Description: {desc[:250]}...\n")
 
 
 # FUNCTION: Use fuzzy matching on game name to handle user input
@@ -140,7 +143,7 @@ def get_rec_by_name_debug_filtered(game_name, auto_select=False, max_time=None):
 
 if __name__ == "__main__":
     # Quick test with debug function
-    print_game_info("Arboretum")
-    debug_recs = get_rec_by_name_debug_filtered("Arboretum", auto_select=True, max_time=60)
+    #print_game_info("Star Wars: Rebellion")
+    debug_recs = get_rec_by_name_debug_filtered("Power Grid", auto_select=True, max_time=130)
     print("\nReturned recommendations:")
     print(debug_recs)

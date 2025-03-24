@@ -66,12 +66,12 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
     avg_weight_scaled = np.expand_dims(df['averageweight_scaled'].values, axis=1)
 
     # Set weights for each ingredient in the model ("recipe" for game rec engine)
-    WEIGHT_TAGS = 0.15
-    WEIGHT_CATEGORIES = 0.10
+    WEIGHT_TAGS = 0.05
+    WEIGHT_CATEGORIES = 0.35
     WEIGHT_MECHANICS = 0.35
-    WEIGHT_MAXPLAYERS = 0.10
-    WEIGHT_PLAYTIME = 0.15
-    WEIGHT_AVGWEIGHT = 0.15
+    WEIGHT_MAXPLAYERS = 0.00
+    WEIGHT_PLAYTIME = 0.05
+    WEIGHT_AVGWEIGHT = 0.20
     #WEIGHT_TFIDF = WEIGHT_TAGS + WEIGHT_CATEGORIES + WEIGHT_MECHANICS
 
     # Construct full feature matrix with appropriate weights
@@ -100,7 +100,7 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
 #to run this function:
 if __name__ == "__main__":
     data_file = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted.csv"
-    output_file = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
+    output_file = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
     tfidf_files = {
         "tags": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_tags.pkl",
         "categories": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_categories.pkl",

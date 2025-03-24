@@ -5,10 +5,10 @@ from scipy.sparse import vstack, hstack
 from sklearn.metrics.pairwise import cosine_similarity
 
 # File paths
-GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
-TFIDF_TAGS_FILE = "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_tags.pkl"
-TFIDF_CATEGORIES_FILE = "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_categories.pkl"
-TFIDF_MECHANICS_FILE = "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_mechanics.pkl"
+GAMEDATA_FILE = "/data/gamedata.csv"
+TFIDF_TAGS_FILE = "/models/tfidf_tags.pkl"
+TFIDF_CATEGORIES_FILE = "/models/tfidf_categories.pkl"
+TFIDF_MECHANICS_FILE = "/models/tfidf_mechanics.pkl"
 
 # Load master data from gamedata.csv
 df = pd.read_csv(GAMEDATA_FILE)
@@ -66,17 +66,18 @@ def compute_custom_cs(weights):
     custom_cs = cosine_similarity(feature_matrix, feature_matrix)
     return custom_cs
 
-
+'''
 if __name__ == "__main__":
     # Define a new weight recipe; adjust these values as desired.
     new_weights = {
-        'tags': 0.15,
-        'categories': 0.10,
-        'mechanics': 0.35,
-        'maxplayers': 0.10,
-        'playingtime': 0.15,
-        'averageweight': 0.15
+        'tags': 0.10,
+        'categories': 0.25,
+        'mechanics': 0.40,
+        'maxplayers': 0.00,
+        'playingtime': 0.05,
+        'averageweight': 0.20
     }
     # Compute the custom cosine similarity matrix using the new recipe
     custom_cs_matrix = compute_custom_cs(new_weights)
     print("Custom cosine similarity matrix shape:", custom_cs_matrix.shape)
+'''
