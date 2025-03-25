@@ -3,7 +3,7 @@ import pandas as pd
 
 # Define file paths
 GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted_cleaned.csv"
-COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
+COSINE_SIM_FILE = "/data/cosine_similarity_origrecipe.npy"
 
 # Load gamedata.csv once and assume its order matches the CS matrix
 df = pd.read_csv(GAMEDATA_FILE)

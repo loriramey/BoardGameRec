@@ -6,7 +6,7 @@ import re
 import plotly.express as px
 
 GAME_DATA = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted_cleaned.csv"
-COSINE_SIM_ORIGINAL = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
+COSINE_SIM_ORIGINAL = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_origrecipe.npy"
 COSINE_SIM_MECH = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_mech_heavy.npy"
 COSINE_SIM_CAT = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
 TAGS = "/Users/loriramey/PycharmProjects/BGapp/data/tag_freq.csv"  #FREQUENCY of the 12 tags in dataset

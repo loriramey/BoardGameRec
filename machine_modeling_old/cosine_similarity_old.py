@@ -35,7 +35,7 @@ feature_matrix = hstack([
 cosine_sim = cosine_similarity(feature_matrix, feature_matrix)
 
 #convert to dataframe for faster lookups, save as numpy for faster retrieval
-COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_weighted.npy"
+COSINE_SIM_FILE = "/data/cosine_similarity_origrecipe.npy"
 np.save(COSINE_SIM_FILE, cosine_sim)
 
 print("Cosine Similarity Matrix Shape:", cosine_sim.shape)
