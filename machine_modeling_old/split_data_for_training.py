@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 #load full data file of ~25,700 games & split 80/20% for testing
-GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
+GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
 df = pd.read_csv(GAMEDATA_FILE)
 
 # Split into 80% training, 20% testing

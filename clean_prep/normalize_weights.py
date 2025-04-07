@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Load the dataset
-DATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
+DATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
 df = pd.read_csv(DATA_FILE)
 
 # Ensure 'averageweight' is numeric
@@ -14,7 +14,7 @@ df['averageweight_scaled'] = (df['averageweight'] - df['averageweight'].min()) /
 )
 
 # Save the updated dataset
-UPDATED_DATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
+UPDATED_DATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
 df.to_csv(UPDATED_DATA_FILE, index=False)
 
 print(f"Updated dataset saved with 'averageweight_scaled' at: {UPDATED_DATA_FILE}")

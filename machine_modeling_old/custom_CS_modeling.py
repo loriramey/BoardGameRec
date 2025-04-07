@@ -5,12 +5,12 @@ from scipy.sparse import vstack, hstack
 from sklearn.metrics.pairwise import cosine_similarity
 
 # File paths
-GAMEDATA_FILE = "/data/gamedata.csv"
+GAMEDATA_FILE = "/data/gamedata_final.csv"
 TFIDF_TAGS_FILE = "/models/tfidf_tags.pkl"
 TFIDF_CATEGORIES_FILE = "/models/tfidf_categories.pkl"
 TFIDF_MECHANICS_FILE = "/models/tfidf_mechanics.pkl"
 
-# Load master data from gamedata.csv
+# Load master data from gamedata_final.csv
 df = pd.read_csv(GAMEDATA_FILE)
 
 

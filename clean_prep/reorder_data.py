@@ -4,7 +4,7 @@
 
 import pandas as pd
 
-GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv"
+GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
 OUTPUT_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted.csv"
 
 

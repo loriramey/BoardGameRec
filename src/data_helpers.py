@@ -5,7 +5,7 @@ import pandas as pd
 GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted_cleaned.csv"
 COSINE_SIM_FILE = "/data/cosine_similarity_origrecipe.npy"
 
-# Load gamedata.csv once and assume its order matches the CS matrix
+# Load gamedata_final.csv once and assume its order matches the CS matrix
 df = pd.read_csv(GAMEDATA_FILE)
 
 # Create an ID-to-index mapping assuming the CS matrix rows correspond to the order of the CSV
@@ -27,7 +27,7 @@ def get_similarity(game_id1: int, game_id2: int) -> float:
 
 def get_game_data(game_id: int) -> pd.Series:
     """
-    Return the game data row from gamedata.csv for the given game ID.
+    Return the game data row from gamedata_final.csv for the given game ID.
     """
     if game_id not in id_to_index:
         raise ValueError("Game ID not found in the dataset.")

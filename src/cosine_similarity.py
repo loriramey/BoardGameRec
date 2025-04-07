@@ -8,19 +8,31 @@ from scipy.sparse import hstack, vstack
 #helper function to handle the pkl dictionary files
 def load_tfidf_matrix(file_path, df):
     """
-    Load a TF-IDF object from file_path. If it is a dictionary,
-    rebuild a sparse matrix using the order of game IDs in df.
+    Load a TF-IDF object from file_path. Supports new dictionary format with keys:
+    - 'matrix': TF-IDF sparse matrix
+    - 'game_ids': list of game IDs matching matrix rows
     """
     with open(file_path, "rb") as f:
         obj = pickle.load(f)
-    # If the loaded object is a dict, convert it into a sparse matrix
-    if isinstance(obj, dict):
-        # Ensure that every game_id from df is in the dictionary.
-        # Order the vectors according to df['id']
-        tfidf_list = [obj[game_id] for game_id in df['id']]
-        return vstack(tfidf_list)
-    else:
-        return obj
+
+    if isinstance(obj, dict) and "matrix" in obj and "game_ids" in obj:
+        matrix = obj["matrix"]
+        id_to_index = {game_id: idx for idx, game_id in enumerate(obj["game_ids"])}
+        indices = [id_to_index[game_id] for game_id in df["id"]]
+        return matrix[indices]
+
+    return obj
+
+def get_weighted_feature_matrix(df, tfidf_tags_matrix, tfidf_categories_matrix, tfidf_mechanics_matrix,
+                                max_players_scaled, playtime_scaled, avg_weight_scaled, weights):
+    return hstack([
+        tfidf_tags_matrix * weights["tags"],
+        tfidf_categories_matrix * weights["categories"],
+        tfidf_mechanics_matrix * weights["mechanics"],
+        max_players_scaled * weights["maxplayers"],
+        playtime_scaled * weights["playtime"],
+        avg_weight_scaled * weights["avgweight"]
+    ])
 
 def compute_cosine_similarity(data_file, output_file, tfidf_files):
     """
@@ -49,7 +61,6 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
     tfidf_categories_matrix = load_tfidf_matrix(tfidf_files['categories'], df)
     tfidf_mechanics_matrix = load_tfidf_matrix(tfidf_files['mechanics'], df)
 
-    # Confirm shapes match dataset size
     expected_rows = df.shape[0]
     assert tfidf_tags_matrix.shape[0] == expected_rows, "Mismatch in TF-IDF tags row count"
     assert tfidf_categories_matrix.shape[0] == expected_rows, "Mismatch in TF-IDF categories row count"
@@ -65,46 +76,42 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
     playtime_scaled = np.expand_dims(df['playingtime_scaled'].values, axis=1)
     avg_weight_scaled = np.expand_dims(df['averageweight_scaled'].values, axis=1)
 
-    # Set weights for each ingredient in the model ("recipe" for game rec engine)
-    WEIGHT_TAGS = 0.05
-    WEIGHT_CATEGORIES = 0.35
-    WEIGHT_MECHANICS = 0.35
-    WEIGHT_MAXPLAYERS = 0.00
-    WEIGHT_PLAYTIME = 0.05
-    WEIGHT_AVGWEIGHT = 0.20
-    #WEIGHT_TFIDF = WEIGHT_TAGS + WEIGHT_CATEGORIES + WEIGHT_MECHANICS
+    RECIPES = {
+        "mech_heavy": {
+            "tags": 0.05, "categories": 0.20, "mechanics": 0.45,
+            "maxplayers": 0.05, "playtime": 0.05, "avgweight": 0.20
+        },
+        "cat_tag_heavy": {
+            "tags": 0.15, "categories": 0.35, "mechanics": 0.25,
+            "maxplayers": 0.05, "playtime": 0.05, "avgweight": 0.15
+        },
+        "mixed": {
+            "tags": 0.10, "categories": 0.20, "mechanics": 0.30,
+            "maxplayers": 0.05, "playtime": 0.10, "avgweight": 0.25
+        }
+    }
 
-    # Construct full feature matrix with appropriate weights
-    print("🧠Combining weighted features for similarity computation...")
-    feature_matrix = hstack([
-        tfidf_tags_matrix * WEIGHT_TAGS,
-        tfidf_categories_matrix * WEIGHT_CATEGORIES,
-        tfidf_mechanics_matrix * WEIGHT_MECHANICS,
-        max_players_scaled * WEIGHT_MAXPLAYERS,
-        playtime_scaled * WEIGHT_PLAYTIME,
-        avg_weight_scaled * WEIGHT_AVGWEIGHT
-    ])
-
-    # Compute cosine similarity
-    print("⚡ Computing cosine similarity...")
-    cosine_sim = cosine_similarity(feature_matrix, feature_matrix)
-
-    # Save as numpy array for faster lookup
-    np.save(output_file, cosine_sim)
-    print(f"✅ Cosine similarity matrix saved: {output_file}")
-    print(f"🟢 Matrix Shape: {cosine_sim.shape}")
-
-    return cosine_sim
-
+    for label, weights in RECIPES.items():
+        print(f"🧪 Running recipe: {label}")
+        feature_matrix = get_weighted_feature_matrix(
+            df, tfidf_tags_matrix, tfidf_categories_matrix, tfidf_mechanics_matrix,
+            max_players_scaled, playtime_scaled, avg_weight_scaled, weights
+        )
+        cosine_sim = cosine_similarity(feature_matrix, feature_matrix)
+        output_path = output_file.replace(".npy", f"_{label}.npy")
+        np.save(output_path, cosine_sim)
+        print(f"✅ Saved matrix for '{label}' at {output_path}")
+        print(f"🟢 Shape: {cosine_sim.shape}")
 
 #to run this function:
 if __name__ == "__main__":
-    data_file = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted.csv"
-    output_file = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
+
+    data_file = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
+    base_output_path = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity.npy"
     tfidf_files = {
         "tags": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_tags.pkl",
         "categories": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_categories.pkl",
         "mechanics": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_mechanics.pkl"
     }
 
-    compute_cosine_similarity(data_file, output_file, tfidf_files)
+    compute_cosine_similarity(data_file, base_output_path, tfidf_files)

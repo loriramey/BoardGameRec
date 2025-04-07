@@ -32,7 +32,7 @@ original_columns = df_original[['minplayers', 'maxplayers', 'playingtime']]
 df_final = pd.concat([df_normalized, original_columns], axis=1)
 
 # Save the final dataset
-df_final.to_csv("/Users/loriramey/PycharmProjects/BGapp/data/gamedata.csv", index=False)
+df_final.to_csv("/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv", index=False)
 
 # Verify it worked
 print(df_final.head())

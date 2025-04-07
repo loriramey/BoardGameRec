@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from rapidfuzz import process, fuzz
 
-GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted_cleaned.csv"
+GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
 COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
 
 # Load master data and cosine similarity matrix
