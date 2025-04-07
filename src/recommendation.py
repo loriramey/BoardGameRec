@@ -3,7 +3,7 @@ import pandas as pd
 from rapidfuzz import process, fuzz
 
 GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
-COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
+COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_mech_heavy.npy"
 
 # Load master data and cosine similarity matrix
 df = pd.read_csv(GAMEDATA_FILE)
@@ -32,12 +32,12 @@ def print_recommendations_summary(recs_df):
 
 #FUNCTION for pulling and printing a single game's information
 def print_game_info(game_name):
-    df_sorted = pd.read_csv("/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted.csv")
+    df_sorted = pd.read_csv("/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv")
 
     # Filter the DataFrame for the game name (case insensitive)
     game_row = df_sorted[df_sorted['name'].str.lower() == game_name.lower()]
     if game_row.empty:
-        print(f"Game '{game_name}' not found in gamedata_sorted.csv.")
+        print(f"Game '{game_name}' not found in gamedata_final.csv.")
         return
     # Get the first match (if there are duplicates)
     row = game_row.iloc[0]
@@ -130,7 +130,7 @@ def get_rec_by_name(game_name, min_players=None, max_players=None,
     recommended_games = recommended_games.sort_values(by="similarity", ascending=False)
 
     return recommended_games[['name', 'description', 'thumbnail', 'yearpublished',
-                'category_list', 'mech_list', 'tags', 'Board Game Rank', 'tags_str',
+                'category_list', 'mech_list', 'tags', 'BGGrank', 'tags_str',
                 'categories_str', 'mechanics_str', 'minplayers', 'maxplayers', 'playingtime',
                 'average', 'averageweight', 'similarity']]
 
