@@ -6,7 +6,7 @@ file_path = "/Users/loriramey/PycharmProjects/BGapp/data/games_tfidf.csv"
 df = pd.read_csv(file_path)
 
 # Columns to normalize
-columns_to_normalize = ['minplayers', 'maxplayers', 'playingtime']
+columns_to_normalize = ['averageweight', 'maxplayers', 'playingtime']
 
 # Apply Min-Max Scaling
 scaler = MinMaxScaler()
@@ -26,7 +26,7 @@ df_original = pd.read_csv(original_file)
 df_normalized = pd.read_csv(normalized_file)
 
 # Select only the original columns for min/max players & playtime
-original_columns = df_original[['minplayers', 'maxplayers', 'playingtime']]
+original_columns = df_original[['averageweight', 'maxplayers', 'playingtime']]
 
 # Merge the original values back into the normalized dataset
 df_final = pd.concat([df_normalized, original_columns], axis=1)

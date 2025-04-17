@@ -1,5 +1,4 @@
 # tests/test_cosine_similarity.py
-import pytest
 import numpy as np
 import pandas as pd
 from src.data_helpers import get_similarity, df
@@ -13,9 +12,7 @@ def test_recommendations_for_random_games():
     Finally, output a summary table listing each game name, its top 5 average similarity, and random average similarity.
     """
     summary_list = []  # to collect final summary for each game
-
-    # Randomly sample 20 games from the master DataFrame
-    random_games = df.sample(n=20, random_state=685)
+    random_games = df.sample(n=20, random_state=685)     # Randomly sample 20 games from the master DataFrame
     for _, game in random_games.iterrows():
         game_name = game['name']
         print(f"\n=== Recommendations for: {game_name} ===")
@@ -36,10 +33,8 @@ def test_recommendations_for_random_games():
         # Sample 5 random games (excluding the input game) for baseline similarity
         random_ids = df[df['name'].str.lower() != game_name.lower()]['id'].sample(5, random_state=42).tolist()
         random_avg = np.mean([get_similarity(game['id'], rid) for rid in random_ids])
-
         print(f"Top 5 average similarity: {top5_avg}")
         print(f"Random sample average similarity: {random_avg}\n")
-
         summary_list.append({
             "Game Name": game_name,
             "Top 5 Avg Similarity": top5_avg,

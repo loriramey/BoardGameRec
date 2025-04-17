@@ -1,20 +1,10 @@
 # viz_data.py
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
-import plotly.express as px
 
-GAME_DATA = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_sorted_cleaned.csv"
-COSINE_SIM_ORIGINAL = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_origrecipe.npy"
-COSINE_SIM_MECH = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_mech_heavy.npy"
-COSINE_SIM_CAT = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_cat_heavy.npy"
-TAGS = "/Users/loriramey/PycharmProjects/BGapp/data/tag_freq.csv"  #FREQUENCY of the 12 tags in dataset
-MECHS = "/Users/loriramey/PycharmProjects/BGapp/data/mechanics_list.csv"  #LIST of all ~185 mechanics
-CATS = "/Users/loriramey/PycharmProjects/BGapp/data/categories_list.csv"  #LIST of all ~85 categories
-
+GAME_DATA = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
 # --- Functions for Data Loading & Preprocessing ---
-
 def load_data(filepath):
     """
     Load the CSV file into a pandas DataFrame.
@@ -30,9 +20,6 @@ def load_data(filepath):
     data['yearpublished'] = pd.to_numeric(data['yearpublished'], errors='coerce')
     data['bayesaverage'] = pd.to_numeric(data['bayesaverage'], errors='coerce')
     data['averageweight'] = pd.to_numeric(data['averageweight'], errors='coerce')
-
-
-
 def clean_year(x):
     """
     Convert a year value (possibly as a string with 'B.C.' or 'BC') to a numeric value.
@@ -59,11 +46,7 @@ def clean_year(x):
         return x
     except Exception as e:
         return None
-
-
-
 # --- Descriptive Statistics & Basic Reports ---
-
 def print_basic_stats(data, cols_to_print=None):
     """
     Print basic descriptive statistics about the dataset.
@@ -92,31 +75,33 @@ def print_basic_stats(data, cols_to_print=None):
 
     print("\nDescriptive Summary:")
     print(summary)
-# --- Static Visualizations using Matplotlib ---
 
-def plot_rating_distribution(data):
+# --- Static Visualizations using Matplotlib ---
+def plot_bayes_rating_distribution(data):
     """
     Generate and save a histogram of average game ratings.
     """
-    if 'bayesaverage' not in data.columns:
-        print("Column 'bayesaverage' not found in data.")
-        return
+    df = data.copy()
+    df['bayesaverage'] = pd.to_numeric(df['bayesaverage'], errors='coerce')
+    df_clean = df.dropna(subset=['bayesaverage'])
 
     plt.figure(figsize=(8, 6))
-    plt.hist(data['bayesaverage'], bins=20, edgecolor='black')
-    plt.title("Distribution of Bayesian Game Average User Ratings")
-    plt.xlabel("Rating")
+    plt.hist(df_clean['bayesaverage'], bins=20, edgecolor='black', range=(1, 10))
+    plt.title("Distribution of Bayesian Average User Ratings")
+    plt.xlabel("Bayesian Rating (scale 1-10)")
     plt.ylabel("Frequency")
     plt.tight_layout()
-    plt.savefig("rating_distribution.png")
+
+    output_file = "average_bayesaverage_per_year.png"
+    plt.savefig(output_file)
     plt.close()
-    print("Rating distribution plot saved as rating_distribution.png.")
+    print(f"Histogram saved to {output_file}")
 
 
 def plot_games_per_year(data):
     """
-    Generate and save visualizations of the number of games published per year and the average Bayesian rating per year,
-    filtering the data to only include games from 1970 until now.
+    Generate and save visualizations of the number of games published per year
+    and the average Bayesian rating per year, filtering the data to only include games from 1970 until now.
     (Note: Negative values representing BC years are automatically excluded.)
     """
     if 'yearpublished' not in data.columns:
@@ -167,7 +152,6 @@ def plot_games_per_year(data):
         print("Column 'bayesaverage' not found in data; skipping average rating computation.")
 
 # --- Top/Bottom Listings & Exporting Data ---
-
 def export_top_bottom_games(data):
     """
     Create CSVs for the top 25 highest-rated games, oldest 10 games, and newest 10 games.
@@ -188,43 +172,16 @@ def export_top_bottom_games(data):
     else:
         print("Column 'yearpublished' not found; skipping oldest/newest exports.")
 
-
-# --- Interactive Visualizations using Plotly ---
-
-def interactive_rating_vs_playtime(data):
-    """
-    Create an interactive scatter plot of play time vs. rating using Plotly.
-    """
-    # Check for the necessary columns
-    if 'playingtime' not in data.columns or 'bayesaverage' not in data.columns or 'name' not in data.columns:
-        print("Necessary columns (playingtime, bayesaverage, name) not found in data for interactive plot.")
-        return
-
-    fig = px.scatter(
-        data,
-        x='playingtime',
-        y='bayesaverage',
-        hover_data=['name'],
-        title="Average (Bayes) Rating vs. Play Time"
-    )
-    # Save as an interactive HTML file
-    fig.write_html("rating_vs_playtime.html")
-    print("Interactive Rating vs. Play Time plot saved as rating_vs_playtime.html.")
-    # Optionally display the plot in a browser (uncomment if desired)
-    # fig.show()
-
-
 # --- Main Execution ---
 
 if __name__ == "__main__":
     # Adjust the filepath to where your CSV is stored
-    filepath = "/Users/loriramey/PycharmProjects/BGapp/data/BGGtop300_cleaned.csv"
+    filepath = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
     data = load_data(filepath)
 
     if data is not None:
         cols = ['average', 'yearpublished', 'bayesaverage', 'playingtime']
         print_basic_stats(data, cols_to_print=cols)
-        plot_rating_distribution(data)
+        plot_bayes_rating_distribution(data)
         plot_games_per_year(data)
-        export_top_bottom_games(data)
-        interactive_rating_vs_playtime(data)
+        #export_top_bottom_games(data)

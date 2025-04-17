@@ -4,7 +4,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 from scipy.sparse import hstack, vstack
 
-
 #helper function to handle the pkl dictionary files
 def load_tfidf_matrix(file_path, df):
     """
@@ -53,10 +52,10 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
     """
 
     #load all necessary files and put data in usable form for this function
-    print(f"🔄 Loading data from: {data_file}")
+    print(f"Loading data from: {data_file}")
     df = pd.read_csv(data_file)
 
-    print("🔄 Loading precomputed TF-IDF vectors...")
+    print("Loading precomputed TF-IDF vectors...")
     tfidf_tags_matrix = load_tfidf_matrix(tfidf_files['tags'], df)
     tfidf_categories_matrix = load_tfidf_matrix(tfidf_files['categories'], df)
     tfidf_mechanics_matrix = load_tfidf_matrix(tfidf_files['mechanics'], df)
@@ -92,7 +91,7 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
     }
 
     for label, weights in RECIPES.items():
-        print(f"🧪 Running recipe: {label}")
+        print(f"Running recipe: {label}")
         feature_matrix = get_weighted_feature_matrix(
             df, tfidf_tags_matrix, tfidf_categories_matrix, tfidf_mechanics_matrix,
             max_players_scaled, playtime_scaled, avg_weight_scaled, weights
@@ -100,8 +99,8 @@ def compute_cosine_similarity(data_file, output_file, tfidf_files):
         cosine_sim = cosine_similarity(feature_matrix, feature_matrix)
         output_path = output_file.replace(".npy", f"_{label}.npy")
         np.save(output_path, cosine_sim)
-        print(f"✅ Saved matrix for '{label}' at {output_path}")
-        print(f"🟢 Shape: {cosine_sim.shape}")
+        print(f"Saved matrix for '{label}' at {output_path}")
+        print(f"Shape: {cosine_sim.shape}")
 
 #to run this function:
 if __name__ == "__main__":
