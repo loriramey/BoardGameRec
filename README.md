@@ -1,5 +1,9 @@
 Board Games: PLay Next App
 ---
+> Current stable: **v1.4-capstone** (frozen)
+> Working branch for repo foundation: **chore/v1-5-foundation**
+---
+
 ## Description
 The Play Next app for board games provides a "recommendation engine" (based on cosine similarity vectors) 
 to help gamers find their next favorite game based on something they're enjoying now. Built on the open-source data provided 

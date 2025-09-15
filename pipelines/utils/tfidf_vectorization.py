@@ -29,7 +29,7 @@ output_tags = {
     "vectorizer": vectorizer_tags,
     "game_ids": df["id"].tolist(),
 }
-with open("../models/tfidf_tags.pkl", "wb") as f:
+with open("../models_old/tfidf_tags.pkl", "wb") as f:
     pickle.dump(output_tags, f)
 
 # === TF-IDF for Mechanics (~90 unique) ===
@@ -41,7 +41,7 @@ output_mech = {
     "vectorizer": vectorizer_mech,
     "game_ids": df["id"].tolist(),
 }
-with open("../models/tfidf_mechanics.pkl", "wb") as f:
+with open("../models_old/tfidf_mechanics.pkl", "wb") as f:
     pickle.dump(output_mech, f)
 
 # === TF-IDF for Categories (~190 unique) ===
@@ -53,7 +53,7 @@ output_cat = {
     "vectorizer": vectorizer_cat,
     "game_ids": df["id"].tolist(),
 }
-with open("../models/tfidf_categories.pkl", "wb") as f:
+with open("../models_old/tfidf_categories.pkl", "wb") as f:
     pickle.dump(output_cat, f)
 
-print("TF-IDF vectorization complete. Files saved to /models.")
+print("TF-IDF vectorization complete. Files saved to /models_old.")

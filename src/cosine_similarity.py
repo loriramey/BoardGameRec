@@ -108,9 +108,9 @@ if __name__ == "__main__":
     data_file = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
     base_output_path = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity.npy"
     tfidf_files = {
-        "tags": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_tags.pkl",
-        "categories": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_categories.pkl",
-        "mechanics": "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_mechanics.pkl"
+        "tags": "/Users/loriramey/PycharmProjects/BGapp/models_old/tfidf_tags.pkl",
+        "categories": "/Users/loriramey/PycharmProjects/BGapp/models_old/tfidf_categories.pkl",
+        "mechanics": "/Users/loriramey/PycharmProjects/BGapp/models_old/tfidf_mechanics.pkl"
     }
 
     compute_cosine_similarity(data_file, base_output_path, tfidf_files)

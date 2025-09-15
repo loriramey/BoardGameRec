@@ -176,7 +176,7 @@ def export_top_bottom_games(data):
 
 if __name__ == "__main__":
     # Adjust the filepath to where your CSV is stored
-    filepath = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
+    filepath = "/data/gamedata_final.csv"
     data = load_data(filepath)
 
     if data is not None:

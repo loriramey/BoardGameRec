@@ -8,7 +8,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Define file paths
 TRAIN_DATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_train.csv"
 TRAIN_COSINE_SIM_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/cosine_similarity_train.npy"
-TFIDF_TRAIN_FILE = "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_train.pkl"
+TFIDF_TRAIN_FILE = "/legacy/models_old/tfidf_train.pkl"
 
 # Compute cosine similarity for training set using helper function
 cosine_sim_train = compute_cosine_similarity(  # Capture returned matrix here

@@ -34,7 +34,7 @@ if 'averageweight_scaled' not in df.columns:
 averageweight_scaled = np.expand_dims(df['averageweight_scaled'].values, axis=1)
 
 # Save as a pickle file
-PICKLE_FILE = "/models/norm_avg_weight.pkl"
+PICKLE_FILE = "/models_old/norm_avg_weight.pkl"
 with open(PICKLE_FILE, "wb") as f:
     pickle.dump(averageweight_scaled, f)
 

@@ -8,8 +8,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from scipy.sparse import hstack
 
 #load game data file and the pre-computed TF-IDF tags/categories/mechanics vectors
-GAMEDATA_FILE = "/Users/loriramey/PycharmProjects/BGapp/data/gamedata_final.csv"
-TFIDF_MIXED_FILE = "/Users/loriramey/PycharmProjects/BGapp/models/tfidf_mixed.pkl"
+GAMEDATA_FILE = "/data/gamedata_final.csv"
+TFIDF_MIXED_FILE = "/models_old/tfidf_mixed.pkl"
 
 df = pd.read_csv(GAMEDATA_FILE)
 with open(TFIDF_MIXED_FILE, "rb") as f:

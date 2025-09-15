@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import sys
-from machine_modeling_old.custom_CS_modeling import compute_custom_cs
+from legacy.machine_modeling_old.custom_CS_modeling import compute_custom_cs
 from src.recommendation import get_rec_by_name, print_recommendations_summary, cosine_sim
 from src.data_helpers import df, get_similarity
 
